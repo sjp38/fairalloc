@@ -48,6 +48,15 @@ def read_points_tsv(filepath):
             points[name] = point
     return points
 
+def rebalance_points(points, winner, players):
+    points[winner] -= 1
+    pluspoint = 1.0 / (len(players) - 1)
+    for p in players:
+        if p == winner:
+            continue
+        points[p] += pluspoint
+    return points
+
 def battle_requests(requests, points):
     winner = 0
 
@@ -58,10 +67,13 @@ def battle_requests(requests, points):
     if spts[-1] == spts[-2]:
         random.seed(datetime.datetime.now())
         winner = random.randint(0, len(requests) - 1)
+        winnername = requests[winner].name
+        players = [x.name for x in requests]
+        points = rebalance_points(points, winnername, players)
     else:
         winner = pts.index(spts[-1])
 
-    return requests[winner]
+    return requests[winner], points
 
 if __name__ == "__main__":
     requests = read_request_tsv("request.tsv")
@@ -80,8 +92,15 @@ if __name__ == "__main__":
             continue
         winner = reqs[0]
         if len(reqs) > 1:
-            winner = battle_requests(reqs, points)
+            winner, points = battle_requests(reqs, points)
         final_assignments.append(winner.name + ": " + winner.selection)
+
+    print "Points"
+    print "======"
+    print ""
+    for name in sorted(points.keys()):
+        print "%s\t%s" % (name, points[name])
+    print "\n"
 
     print "Assignment"
     print "=========="
