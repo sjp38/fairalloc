@@ -83,5 +83,8 @@ if __name__ == "__main__":
             winner = battle_requests(reqs, points)
         final_assignments.append(winner.name + ": " + winner.selection)
 
+    print "Assignment"
+    print "=========="
+    print ""
     for a in sorted(final_assignments):
         print a
