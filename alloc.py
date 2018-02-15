@@ -41,7 +41,7 @@ def read_points_tsv(filepath):
                 continue
             fields = line.split('\t')
             name = fields[0]
-            point = int(fields[1])
+            point = float(fields[1])
             if name in points.keys():
                 print "Same name in points file %s!" % filepath
                 exit(1)
