@@ -15,6 +15,10 @@ class Request:
         self.name = name
         self.selection = selection
 
+    def __str__(self):
+        return "ts: %s, email: %s, name: %s, selection: %s" % (
+                self.timestamp, self.email, self.name, self.selection)
+
     def same_person(self, req):
         if self.email == req.email:
             return True
@@ -26,7 +30,7 @@ def read_request_tsv(filepath):
     requests = []
     with open(filepath, 'r') as f:
         for line in f:
-            fields = line.split('\t')
+            fields = filter(None, line.split('\t'))
             if fields[0] == "Timestamp":
                 continue
             requests.append(
@@ -75,9 +79,25 @@ def battle_requests(requests, points):
 
     return requests[winner], points
 
+def validate_inputs(requests, points):
+    for idx, r in enumerate(requests):
+        for idx2, r2 in enumerate(requests):
+            if idx == idx2:
+                continue
+            if r.same_person(r2):
+                print "Requests from same person exists!"
+                print "conflicts:\n\t%s\n\t%s" % (r, r2)
+                exit(1)
+    for r in requests:
+        name = r.name
+        if not name in points.keys():
+            print "No point for ", name
+            exit(1)
+
 if __name__ == "__main__":
     requests = read_request_tsv("request.tsv")
     points = read_points_tsv("points.tsv")
+    validate_inputs(requests, points)
 
     by_selection = {}
     for r in requests:
