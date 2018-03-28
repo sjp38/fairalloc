@@ -1,10 +1,11 @@
 TODO
 ====
 
-- validate files
 - receive file paths from command line
 - Allow automatic points file update
 
 
 DONE
 ====
+
+- validate files
