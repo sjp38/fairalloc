@@ -71,11 +71,11 @@ def battle_requests(requests, points):
     if spts[-1] == spts[-2]:
         random.seed(datetime.datetime.now())
         winner = random.randint(0, len(requests) - 1)
-        winnername = requests[winner].name
-        players = [x.name for x in requests]
-        points = rebalance_points(points, winnername, players)
     else:
         winner = pts.index(spts[-1])
+    winnername = requests[winner].name
+    players = [x.name for x in requests]
+    points = rebalance_points(points, winnername, players)
 
     return requests[winner], points
 
