@@ -1,7 +1,22 @@
 #!/usr/bin/env python
 
+import argparse
 import datetime
 import random
+
+program_descr = """
+Do fair alloc based on points
+"""
+
+parser = argparse.ArgumentParser(description=program_descr,
+        formatter_class=argparse.RawDescriptionHelpFormatter)
+parser.add_argument('--requests', '-r', nargs=1, default=['request.tsv'],
+        type=str, help='path to requests file', metavar='<REQUESTS>')
+parser.add_argument('--points', '-p', nargs=1, default=['points.tsv'],
+        type=str, help='path to points file', metavar='<POINTS>')
+args = parser.parse_args()
+requestfile = vars(args)['requests'][0]
+pointfile = vars(args)['points'][0]
 
 class Request:
     timestamp = None
@@ -95,8 +110,8 @@ def validate_inputs(requests, points):
             exit(1)
 
 if __name__ == "__main__":
-    requests = read_request_tsv("request.tsv")
-    points = read_points_tsv("points.tsv")
+    requests = read_request_tsv(requestfile)
+    points = read_points_tsv(pointfile)
     validate_inputs(requests, points)
 
     by_selection = {}
