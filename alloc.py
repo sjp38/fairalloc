@@ -45,6 +45,7 @@ def read_request_tsv(filepath):
     requests = []
     with open(filepath, 'r') as f:
         for line in f:
+            line = line.strip()
             fields = filter(None, line.split('\t'))
             if fields[0] == "Timestamp":
                 continue
